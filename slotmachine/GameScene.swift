@@ -11,10 +11,10 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    let slotOptios = ["Cherry", "Banana", "Lemon", "Seven", "Apple" ]
-    var currentWheelValue1: String = ""
-    var currentWheelValue2: String = ""
-    var currentWheelValue3: String = ""
+    let slotOptios = ["bell", "cherry", "coin", "seven", "grape", "strawberry" ]
+    var currentReelValue1: String = ""
+    var currentReelValue2: String = ""
+    var currentReelValue3: String = ""
     
     var wheelActive: Bool = false
     
@@ -46,6 +46,11 @@ class GameScene: SKScene {
         }
     }
     
+    // 3 spin images as default images
+    var spin_1: SKSpriteNode!
+    var spin_2: SKSpriteNode!
+    var spin_3: SKSpriteNode!
+    
     // BETS 10 20 50 100
     var betLabel_10: SKLabelNode!
     var betLabel_20: SKLabelNode!
@@ -53,11 +58,11 @@ class GameScene: SKScene {
     var betLabel_100: SKLabelNode!
     
     // SPIN button
-    var spinButton: SKLabelNode!
+    var spinButton: SKNode!
     // RESET button
-    var resetButton: SKLabelNode!
+    var resetButton: SKNode!
     // QUIT button
-    var quitButton: SKLabelNode!
+    var quitButton: SKNode!
     
     var labelFontName: String = "AmericanTypewriter-Bold"
     var numberFontName: String = "BanglaSangamMN-Bold"
@@ -188,6 +193,25 @@ class GameScene: SKScene {
         bg_lc3.position = CGPoint(x: 160, y: 0)
         self.addChild(bg_lc3)
         
+        // 3 spins
+        spin_1 = SKSpriteNode(imageNamed: "spin")
+        spin_1.size = CGSize(width: 150, height: 150)
+        spin_1.position = CGPoint(x: -160, y: 0)
+        spin_1.zPosition = 1
+        self.addChild(spin_1)
+        // 2 spin
+        spin_2 = SKSpriteNode(imageNamed: "spin")
+        spin_2.size = CGSize(width: 150, height: 150)
+        spin_2.position = CGPoint(x: 0, y: 0)
+        spin_2.zPosition = 1
+        self.addChild(spin_2)
+        // 3 spin
+        spin_3 = SKSpriteNode(imageNamed: "spin")
+        spin_3.size = CGSize(width: 150, height: 150)
+        spin_3.position = CGPoint(x: 160, y: 0)
+        spin_3.zPosition = 1
+        self.addChild(spin_3)
+        
         
         
         // Bet 10 label
@@ -227,30 +251,21 @@ class GameScene: SKScene {
         self.addChild(betLabel_100)
         
         // SPIN button
-        spinButton = SKLabelNode(text: "SPIN")
+        spinButton = SKSpriteNode(texture: SKTexture(imageNamed: "spin"), color: UIColor.white, size: CGSize(width: 150, height: 100))
         spinButton.position = CGPoint(x: 0, y: -350)
         spinButton.zPosition = 1
-        spinButton.fontName = labelFontName
-        spinButton.fontSize = CGFloat(labelFontSize)
-        spinButton.fontColor = UIColor.white
         self.addChild(spinButton)
         
         // RESET button
-        resetButton = SKLabelNode(text: "RESET")
+        resetButton = SKSpriteNode(texture: SKTexture(imageNamed: "reset"), size: CGSize(width: 120, height: 100))
         resetButton.position = CGPoint(x: -180, y: -450)
         resetButton.zPosition = 1
-        resetButton.fontName = labelFontName
-        resetButton.fontSize = CGFloat(labelFontSize)
-        resetButton.fontColor = UIColor.white
         self.addChild(resetButton)
         
         // QUIT button
-        quitButton = SKLabelNode(text: "QUIT")
+        quitButton = SKSpriteNode(texture: SKTexture(imageNamed: "quit"), color: UIColor.white, size: CGSize(width: 100, height: 44))
         quitButton.position = CGPoint(x: 180, y: -450)
         quitButton.zPosition = 1
-        quitButton.fontName = labelFontName
-        quitButton.fontSize = CGFloat(labelFontSize)
-        quitButton.fontColor = UIColor.white
         self.addChild(quitButton)
         
         
@@ -263,66 +278,70 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
-//        if (wheelActive == false)
-//        {
-//            print("spinning...")
-//            wheelActive = true
-//
-//            let wait: SKAction = SKAction.wait(forDuration: 1)
-//            let spinWheel1: SKAction = SKAction.run {
-//                self.spinWheel(whichWheel: 1)
-//            }
-//
-//            let spinWheel2: SKAction = SKAction.run {
-//                self.spinWheel(whichWheel: 2)
-//            }
-//            let spinWheel3: SKAction = SKAction.run {
-//                self.spinWheel(whichWheel: 3)
-//            }
-//            let testWheelValues: SKAction = SKAction.run {
-//                self.testValues()
-//            }
-//            self.run(SKAction.sequence([
-//                wait,
-//                spinWheel1,
-//                wait,
-//                spinWheel2,
-//                wait,
-//                spinWheel3,
-//                wait,
-//                testWheelValues
-//            ]))
-//        }
         
+        for touch in touches {
+            let location = touch.location(in: self)
+            if spinButton.contains(location) {
+                print("spinning ~~~!")
+                
+                wheelActive = true
+    
+                let wait: SKAction = SKAction.wait(forDuration: 1)
+                let spinReel1: SKAction = SKAction.run {
+                    self.spinReel(whichReel: 1)
+                }
+    
+                let spinReel2: SKAction = SKAction.run {
+                    self.spinReel(whichReel: 2)
+                }
+                let spinReel3: SKAction = SKAction.run {
+                    self.spinReel(whichReel: 3)
+                }
+                let testReelValues: SKAction = SKAction.run {
+                    self.testValues()
+                }
+                self.run(SKAction.sequence([
+                    wait,
+                    spinReel1,
+                    wait,
+                    spinReel2,
+                    wait,
+                    spinReel3,
+                    wait,
+                    testReelValues
+                ]))
+            }
+        }
+    
+
+    
     }
     
-    func spinWheel(whichWheel: Int) -> Void
+    func spinReel(whichReel: Int) -> Void
     {
         let randomNum: UInt32 = arc4random_uniform( UInt32(slotOptios.count))
         
-        let wheelPick: String = slotOptios[ Int(randomNum) ]
-        print("Wheel \(whichWheel) spun a value of \(wheelPick)")
+        let reelPick: String = slotOptios[ Int(randomNum) ]
+        print("Reel \(whichWheel) spun a value of \(reelPick)")
         
-        if(whichWheel == 1)
+        if(whichReel == 1)
         {
-            currentWheelValue1 = wheelPick
-            
-//            if let wheel1: SKSpriteNode = self.childNode(withName: "wheel1") as? SKSpriteNode
-//            {
-//                wheel1.texture = SKTexture(imageNamed: wheelPick)
-//            }
-        } else if(whichWheel == 2)
+            currentReelValue1 = reelPick
+            spin_1.texture = SKTexture(imageNamed: reelPick)
+        } else if(whichReel == 2)
         {
-            currentWheelValue2 = wheelPick
-        } else if(whichWheel == 3)
+            currentReelValue2 = reelPick
+            spin_2.texture = SKTexture(imageNamed: reelPick)
+        } else if(whichReel == 3)
         {
-            currentWheelValue3 = wheelPick
+            currentReelValue3 = reelPick
+            spin_3.texture = SKTexture(imageNamed: reelPick)
         }
     }
     
     func testValues()
     {
-        if (currentWheelValue1 == currentWheelValue2 && currentWheelValue2 == currentWheelValue3)
+        if (currentReelValue1 == currentReelValue2 && currentReelValue2 == currentReelValue3)
         {
             print("they all match!!!")
         } else {

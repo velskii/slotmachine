@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C4D14886279DDF370041DB78 /* images in Resources */ = {isa = PBXBuildFile; fileRef = C4D14885279DDF370041DB78 /* images */; };
 		C4E4FEB5279CCC6A00971FAB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E4FEB4279CCC6A00971FAB /* AppDelegate.swift */; };
 		C4E4FEB7279CCC6A00971FAB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = C4E4FEB6279CCC6A00971FAB /* GameScene.sks */; };
 		C4E4FEB9279CCC6A00971FAB /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = C4E4FEB8279CCC6A00971FAB /* Actions.sks */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C4D14885279DDF370041DB78 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		C4E4FEB1279CCC6A00971FAB /* slotmachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = slotmachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E4FEB4279CCC6A00971FAB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4E4FEB6279CCC6A00971FAB /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				C4E4FEBE279CCC6A00971FAB /* Main.storyboard */,
 				C4E4FEC1279CCC6E00971FAB /* Assets.xcassets */,
 				C4E4FEC3279CCC6E00971FAB /* LaunchScreen.storyboard */,
+				C4D14885279DDF370041DB78 /* images */,
 			);
 			path = slotmachine;
 			sourceTree = "<group>";
@@ -129,6 +132,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4D14886279DDF370041DB78 /* images in Resources */,
 				C4E4FEC0279CCC6A00971FAB /* Main.storyboard in Resources */,
 				C4E4FEB7279CCC6A00971FAB /* GameScene.sks in Resources */,
 				C4E4FEC2279CCC6E00971FAB /* Assets.xcassets in Resources */,
