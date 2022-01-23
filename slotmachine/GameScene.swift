@@ -16,6 +16,44 @@ class GameScene: SKScene {
     var currentReelValue2: String = ""
     var currentReelValue3: String = ""
     
+    var wins: Int! = 0 {
+        didSet {
+            winsLabel.text = "Wins: \(wins ?? 0)"
+        }
+    }
+    var losses: Int! = 0  {
+        didSet {
+            lossesLabel.text = "Losses: \(losses ?? 0)"
+        }
+    }
+    var winRatio: Float! = 0.0 {
+        didSet {
+            winRatioLabel.text = "WinRatio: \(winRatio ?? 0)"
+        }
+    }
+    var turn: Int = 0 {
+        didSet {
+            turnLabel.text = "Turns: \(turn)"
+        }
+    }
+    
+    var jackpot: Int = 5000 {
+        didSet {
+            jackpotNumber.text = "\(jackpot)"
+        }
+    }
+    
+    var resultLabel: SKLabelNode!
+    var winsLabel: SKLabelNode!
+    var lossesLabel: SKLabelNode!
+    var winRatioLabel: SKLabelNode!
+    var turnLabel: SKLabelNode!
+    var jackpotNumber: SKLabelNode!
+    
+    var jackpotLabel: SKLabelNode!
+    
+    
+    
     var wheelActive: Bool = false
     
     
@@ -31,7 +69,7 @@ class GameScene: SKScene {
     // BETS
     var betLabel: SKLabelNode!
     var betNumber: SKLabelNode!
-    var bets:Int = 50 {
+    var bets:Int = 10 {
         didSet {
             betNumber.text = "\(bets)"
         }
@@ -40,7 +78,7 @@ class GameScene: SKScene {
     // WINNER PAID
     var winnerPaidLabel: SKLabelNode!
     var winnerPaidNumber: SKLabelNode!
-    var winnerPaid:Int = 50 {
+    var winnerPaid:Int = 0 {
         didSet {
             winnerPaidNumber.text = "\(winnerPaid)"
         }
@@ -72,9 +110,68 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
+        // resultLabel
+        resultLabel = SKLabelNode(text: "Let's spin~")
+        resultLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 540, y: self.frame.size.height * 0.5 - 435)
+        resultLabel.zPosition = 1
+        resultLabel.fontName = labelFontName
+        resultLabel.fontSize = CGFloat(25)
+        //rgba(248, 179, 9, 1)
+        resultLabel.fontColor = UIColor(displayP3Red: 248, green: 179, blue: 9, alpha: 1)
+        self.addChild(resultLabel)
+        
+        // turnLabel
+        turnLabel = SKLabelNode(text: "Turns: 0")
+        turnLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 350, y: self.frame.size.height * 0.5 - 435)
+        turnLabel.zPosition = 1
+        turnLabel.fontName = labelFontName
+        turnLabel.fontSize = CGFloat(25)
+        //rgba(248, 179, 9, 1)
+        turnLabel.fontColor = UIColor(displayP3Red: 248, green: 179, blue: 9, alpha: 1)
+        self.addChild(turnLabel)
+        
+        // winsLabel
+        winsLabel = SKLabelNode(text: "Wins: 0")
+        winsLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 550, y: self.frame.size.height * 0.5 - 465)
+        winsLabel.zPosition = 1
+        winsLabel.fontName = labelFontName
+        winsLabel.fontSize = CGFloat(25)
+        //rgba(248, 179, 9, 1)
+        winsLabel.fontColor = UIColor(displayP3Red: 248, green: 179, blue: 9, alpha: 1)
+        self.addChild(winsLabel)
+        
+        // lossesLabel
+        lossesLabel = SKLabelNode(text: "Losses: 0")
+        lossesLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 400, y: self.frame.size.height * 0.5 - 465)
+        lossesLabel.zPosition = 1
+        lossesLabel.fontName = labelFontName
+        lossesLabel.fontSize = CGFloat(25)
+        //rgba(248, 179, 9, 1)
+        lossesLabel.fontColor = UIColor(displayP3Red: 248, green: 179, blue: 9, alpha: 1)
+        self.addChild(lossesLabel)
+        
+        // winRatioLabel
+        winRatioLabel = SKLabelNode(text: "WinRatio: 0.0")
+        winRatioLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 220, y: self.frame.size.height * 0.5 - 465)
+        winRatioLabel.zPosition = 1
+        winRatioLabel.fontName = labelFontName
+        winRatioLabel.fontSize = CGFloat(25)
+        //rgba(248, 179, 9, 1)
+        winRatioLabel.fontColor = UIColor(displayP3Red: 248, green: 179, blue: 9, alpha: 1)
+        self.addChild(winRatioLabel)
+        
+        
+        
+        
+        // slot graphic
+        let slotGraphic = SKSpriteNode(texture: SKTexture(imageNamed: "slot-machine"), size: CGSize(width: 400, height: 150))
+        slotGraphic.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 145)
+        slotGraphic.zPosition = 1
+        self.addChild(slotGraphic)
+        
         // Jackpot Label
-        let jackpotLabel = SKLabelNode(text: "JACKPOT")
-        jackpotLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 200)
+        jackpotLabel = SKLabelNode(text: "JACKPOT")
+        jackpotLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 250)
         jackpotLabel.zPosition = 1
         jackpotLabel.fontName = labelFontName
         jackpotLabel.fontSize = CGFloat(36)
@@ -83,8 +180,8 @@ class GameScene: SKScene {
         self.addChild(jackpotLabel)
         
         // Jackpot Number
-        let jackpotNumber = SKLabelNode(text: "888")
-        jackpotNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 240)
+        jackpotNumber = SKLabelNode(text: "5000")
+        jackpotNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 290)
         jackpotNumber.zPosition = 1
         jackpotNumber.fontName = numberFontName
         jackpotNumber.fontSize = CGFloat(40)
@@ -94,17 +191,16 @@ class GameScene: SKScene {
         
         // Credits number
         creditNumber = SKLabelNode(text: "1000")
-        creditNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 540, y: self.frame.size.height * 0.5 - 300)
+        creditNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 540, y: self.frame.size.height * 0.5 - 350)
         creditNumber.zPosition = 1
         creditNumber.fontName = numberFontName
         creditNumber.fontSize = CGFloat(numberFontSize)
         creditNumber.fontColor = UIColor.white
-        credits = 2000
         self.addChild(creditNumber)
         
         // Credits label
         creditLabel = SKLabelNode(text: "CREDITS")
-        creditLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 540, y: self.frame.size.height * 0.5 - 330)
+        creditLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 540, y: self.frame.size.height * 0.5 - 380)
         creditLabel.zPosition = 1
         creditLabel.fontName = labelFontName
         creditLabel.fontSize = CGFloat(labelFontSize)
@@ -113,18 +209,17 @@ class GameScene: SKScene {
         
         
         // Bets number
-        betNumber = SKLabelNode(text: "50")
-        betNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 300)
+        betNumber = SKLabelNode(text: "10")
+        betNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 350)
         betNumber.zPosition = 1
         betNumber.fontName = numberFontName
         betNumber.fontSize = CGFloat(numberFontSize)
         betNumber.fontColor = UIColor.white
-        credits = 50
         self.addChild(betNumber)
         
         // Bets label
         betLabel = SKLabelNode(text: "BETS")
-        betLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 330)
+        betLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 380)
         betLabel.zPosition = 1
         betLabel.fontName = labelFontName
         betLabel.fontSize = CGFloat(labelFontSize)
@@ -133,18 +228,17 @@ class GameScene: SKScene {
         
         
         // WinnerPaid number
-        winnerPaidNumber = SKLabelNode(text: "200")
-        winnerPaidNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 220, y: self.frame.size.height * 0.5 - 300)
+        winnerPaidNumber = SKLabelNode(text: "0")
+        winnerPaidNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 220, y: self.frame.size.height * 0.5 - 350)
         winnerPaidNumber.zPosition = 1
         winnerPaidNumber.fontName = numberFontName
         winnerPaidNumber.fontSize = CGFloat(numberFontSize)
         winnerPaidNumber.fontColor = UIColor.white
-        winnerPaid = 200
         self.addChild(winnerPaidNumber)
         
         // WinnerPaid label
         winnerPaidLabel = SKLabelNode(text: "WINNER PAID")
-        winnerPaidLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 220, y: self.frame.size.height * 0.5 - 330)
+        winnerPaidLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 220, y: self.frame.size.height * 0.5 - 380)
         winnerPaidLabel.zPosition = 1
         winnerPaidLabel.fontName = labelFontName
         winnerPaidLabel.fontSize = CGFloat(labelFontSize)
@@ -281,6 +375,53 @@ class GameScene: SKScene {
         
         for touch in touches {
             let location = touch.location(in: self)
+            
+            if betLabel_10.contains(location){
+                if (credits < 10) {
+                    showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+                }else {
+                    bets = 10
+                }
+            }
+            if betLabel_20.contains(location){
+                if (credits < 20) {
+                    showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+                } else {
+                    bets = 20
+                }
+            }
+            if betLabel_50.contains(location){
+                if (credits < 50) {
+                    showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+                } else {
+                    bets = 50
+                }
+            }
+            if betLabel_100.contains(location){
+                if (credits < 100) {
+                    showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+                } else {
+                    bets = 100
+                }
+            }
+            
+            if quitButton.contains(location){
+                showToast(message: "Quit successfully!", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+            }
+            
+            if resetButton.contains(location){
+                print("Resetting ~~~")
+                jackpot = 5000
+                turn = 0
+                bets = 10
+                credits = 1000
+                winRatio = 0
+                spin_1.texture = SKTexture(imageNamed: "spin")
+                spin_2.texture = SKTexture(imageNamed: "spin")
+                spin_3.texture = SKTexture(imageNamed: "spin")
+            }
+            
+            
             if spinButton.contains(location) {
                 print("spinning ~~~!")
                 
@@ -319,33 +460,60 @@ class GameScene: SKScene {
     
     func spinReel(whichReel: Int) -> Void
     {
-        let randomNum: UInt32 = arc4random_uniform( UInt32(slotOptios.count))
-        
-        let reelPick: String = slotOptios[ Int(randomNum) ]
-        print("Reel \(whichWheel) spun a value of \(reelPick)")
-        
-        if(whichReel == 1)
-        {
-            currentReelValue1 = reelPick
-            spin_1.texture = SKTexture(imageNamed: reelPick)
-        } else if(whichReel == 2)
-        {
-            currentReelValue2 = reelPick
-            spin_2.texture = SKTexture(imageNamed: reelPick)
-        } else if(whichReel == 3)
-        {
-            currentReelValue3 = reelPick
-            spin_3.texture = SKTexture(imageNamed: reelPick)
+        if (credits < bets) {
+            showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+            
+        } else {
+            let randomNum: UInt32 = arc4random_uniform( UInt32(slotOptios.count))
+            
+            let reelPick: String = slotOptios[ Int(randomNum) ]
+            print("Reel \(whichReel) spun a value of \(reelPick)")
+            
+            if(whichReel == 1)
+            {
+                currentReelValue1 = reelPick
+                spin_1.texture = SKTexture(imageNamed: reelPick)
+            } else if(whichReel == 2)
+            {
+                currentReelValue2 = reelPick
+                spin_2.texture = SKTexture(imageNamed: reelPick)
+            } else if(whichReel == 3)
+            {
+                currentReelValue3 = reelPick
+                spin_3.texture = SKTexture(imageNamed: reelPick)
+            }
         }
+        
     }
     
     func testValues()
     {
+        turn += 1
         if (currentReelValue1 == currentReelValue2 && currentReelValue2 == currentReelValue3)
         {
-            print("they all match!!!")
+            //win
+            wins += 1
+            winRatio = Float(wins / turn)
+            if currentReelValue1 == "seven"{
+                //jackpot
+                resultLabel.text = "You win jackpot 5000!!!!"
+                credits += 5000
+                winnerPaid = 5000
+                
+            } else {
+                // win
+                resultLabel.text = "You win !!!!"
+                credits += bets
+                winnerPaid = bets
+            }
         } else {
             print("you lose, sucker~")
+            //lose
+            losses += 1
+            winRatio = Float(wins / turn)
+            resultLabel.text = "You lose ~~"
+            credits -= bets
+            winnerPaid = 0
         }
     }
     
@@ -353,4 +521,37 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
+    
+    func showToast(message : String, font: UIFont) {
+
+        let toastLabel = UILabel(frame: CGRect(x: self.view!.frame.size.width/2 - 75, y: self.view!.frame.size.height-100, width: 150, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.font = font
+        toastLabel.textAlignment = NSTextAlignment.center;
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view!.addSubview(toastLabel)
+        UIView.animate(withDuration: 2.0, delay: 0.1, options: .curveEaseOut, animations: {
+             toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    }
+    
+    
+    
+    func checkJackPot() {
+        var jackPotTry = arc4random_uniform(100);
+        var jackPotWin = arc4random_uniform(100);
+        if (jackPotTry == jackPotWin) {
+            showToast(message: "You Won the $\(jackpot) Jackpot!!", font: UIFont(name: "Bangla Sangam MN", size: 30)!)
+            credits += jackpot;
+            jackpot = 1000;
+        }
+    }
+    
+    
 }
