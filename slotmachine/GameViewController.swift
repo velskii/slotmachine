@@ -1,9 +1,10 @@
-//
-//  GameViewController.swift
-//  slotmachine
-//
-//  Created by Jerry on 2022-01-22.
-//
+/*
+ File       : GameScene.swift
+ Author     : Feiliang Zhou
+ StudentId  : 301216989
+ Date       : January 22, 2022
+ Description: slotmachine
+*/
 
 import UIKit
 import SpriteKit
