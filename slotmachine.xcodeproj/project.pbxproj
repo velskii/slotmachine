@@ -58,7 +58,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C412CA0E27B098600054D3DB /* Sounds */ = {
+		C412CA0E27B098600054D3DB /* audio */ = {
 			isa = PBXGroup;
 			children = (
 				C412CA0F27B098600054D3DB /* background-music.mp3 */,
@@ -70,14 +70,14 @@
 				C412CA1527B098600054D3DB /* high-score.mp3 */,
 				C412CA1627B098600054D3DB /* riseup.mp3 */,
 			);
-			path = Sounds;
+			path = audio;
 			sourceTree = "<group>";
 		};
 		C4E4FEA8279CCC6A00971FAB = {
 			isa = PBXGroup;
 			children = (
 				C4E4FEB3279CCC6A00971FAB /* slotmachine */,
-				C412CA0E27B098600054D3DB /* Sounds */,
+				C412CA0E27B098600054D3DB /* audio */,
 				C4E4FEB2279CCC6A00971FAB /* Products */,
 			);
 			sourceTree = "<group>";

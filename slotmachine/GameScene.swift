@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import AVFoundation
 
 class GameScene: SKScene {
     
@@ -112,6 +113,27 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
+        // Sounds
+        let backgroundMusic = SKAudioNode(fileNamed: "background-music.mp3")
+        self.addChild(backgroundMusic)
+        backgroundMusic.autoplayLooped = true
+        
+        // preload / prewarm impulse
+        do{
+            let sounds:[String] = ["spin", "win", "game-over", "casino-chips", "chimeup", "high-score", "riseup"]
+            for sound in sounds
+            {
+                let path: String = Bundle.main.path(forResource: sound, ofType: "mp3")!
+                let url: URL = URL(fileURLWithPath: path)
+                let player: AVAudioPlayer = try AVAudioPlayer(contentsOf: url)
+                player.prepareToPlay()
+            }
+        }
+        catch
+        {
+            
+        }
+
         // resultLabel
         resultLabel = SKLabelNode(text: "Let's spin~")
         resultLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 540, y: self.frame.size.height * 0.5 - 435)
@@ -410,11 +432,13 @@ class GameScene: SKScene {
             }
             
             if quitButton.contains(location){
+                scene?.run(SKAction.playSoundFileNamed("game-over", waitForCompletion: false))
                 showToast(message: "Quit successfully!", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
             }
             
             if resetButton.contains(location){
                 print("Resetting ~~~")
+                spinButton.texture = SKTexture(imageNamed: "spin");
                 jackpot = 5000
                 turn = 0
                 bets = 0
@@ -475,6 +499,7 @@ class GameScene: SKScene {
     
     func spinReel(whichReel: Int) -> Void
     {
+        scene?.run(SKAction.playSoundFileNamed("spin", waitForCompletion: false))
         let randomNum: UInt32 = arc4random_uniform( UInt32(slotOptios.count))
         
         let reelPick: String = slotOptios[ Int(randomNum) ]
@@ -502,10 +527,12 @@ class GameScene: SKScene {
         if (currentReelValue1 == currentReelValue2 && currentReelValue2 == currentReelValue3)
         {
             //win
+            scene?.run(SKAction.playSoundFileNamed("win", waitForCompletion: false))
             wins += 1
             winRatio = Float(wins / turn)
             if currentReelValue1 == "seven"{
                 //jackpot
+                scene?.run(SKAction.playSoundFileNamed("high-score", waitForCompletion: false))
                 showToast(message: "YYou win jackpot 5000!!", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 12)!)
                 resultLabel.text = "You win jackpot 5000!!!!"
                 credits += 5000
@@ -520,6 +547,7 @@ class GameScene: SKScene {
         } else {
             print("you lose, sucker~")
             //lose
+            scene?.run(SKAction.playSoundFileNamed("chimeup", waitForCompletion: false))
             losses += 1
             winRatio = Float(wins / turn)
             resultLabel.text = "You lose~"
