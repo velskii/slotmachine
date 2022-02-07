@@ -15,6 +15,8 @@ class GameScene: SKScene {
     var currentReelValue1: String = ""
     var currentReelValue2: String = ""
     var currentReelValue3: String = ""
+    let initialCredits = 200;
+    
     
     var wins: Int! = 0 {
         didSet {
@@ -60,7 +62,7 @@ class GameScene: SKScene {
     // CREDITS
     var creditLabel: SKLabelNode!
     var creditNumber: SKLabelNode!
-    var credits:Int = 1000 {
+    var credits:Int = 200 {
         didSet {
             creditNumber.text = "\(credits)"
         }
@@ -69,7 +71,7 @@ class GameScene: SKScene {
     // BETS
     var betLabel: SKLabelNode!
     var betNumber: SKLabelNode!
-    var bets:Int = 10 {
+    var bets:Int = 0 {
         didSet {
             betNumber.text = "\(bets)"
         }
@@ -96,7 +98,7 @@ class GameScene: SKScene {
     var betLabel_100: SKLabelNode!
     
     // SPIN button
-    var spinButton: SKNode!
+    var spinButton: SKSpriteNode!
     // RESET button
     var resetButton: SKNode!
     // QUIT button
@@ -190,7 +192,7 @@ class GameScene: SKScene {
         
         
         // Credits number
-        creditNumber = SKLabelNode(text: "1000")
+        creditNumber = SKLabelNode(text: "\(initialCredits)")
         creditNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 540, y: self.frame.size.height * 0.5 - 350)
         creditNumber.zPosition = 1
         creditNumber.fontName = numberFontName
@@ -209,7 +211,7 @@ class GameScene: SKScene {
         
         
         // Bets number
-        betNumber = SKLabelNode(text: "10")
+        betNumber = SKLabelNode(text: "0")
         betNumber.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 350)
         betNumber.zPosition = 1
         betNumber.fontName = numberFontName
@@ -369,16 +371,15 @@ class GameScene: SKScene {
    
     
     
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
-        
         for touch in touches {
             let location = touch.location(in: self)
             
             if betLabel_10.contains(location){
                 if (credits < 10) {
                     showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+                    spinButton.texture = SKTexture(imageNamed: "grey_spin");
                 }else {
                     bets = 10
                 }
@@ -386,6 +387,7 @@ class GameScene: SKScene {
             if betLabel_20.contains(location){
                 if (credits < 20) {
                     showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+                    spinButton.texture = SKTexture(imageNamed: "grey_spin");
                 } else {
                     bets = 20
                 }
@@ -393,6 +395,7 @@ class GameScene: SKScene {
             if betLabel_50.contains(location){
                 if (credits < 50) {
                     showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+                    spinButton.texture = SKTexture(imageNamed: "grey_spin");
                 } else {
                     bets = 50
                 }
@@ -400,6 +403,7 @@ class GameScene: SKScene {
             if betLabel_100.contains(location){
                 if (credits < 100) {
                     showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+                    spinButton.texture = SKTexture(imageNamed: "grey_spin");
                 } else {
                     bets = 100
                 }
@@ -413,8 +417,8 @@ class GameScene: SKScene {
                 print("Resetting ~~~")
                 jackpot = 5000
                 turn = 0
-                bets = 10
-                credits = 1000
+                bets = 0
+                credits = initialCredits
                 winRatio = 0
                 spin_1.texture = SKTexture(imageNamed: "spin")
                 spin_2.texture = SKTexture(imageNamed: "spin")
@@ -423,11 +427,22 @@ class GameScene: SKScene {
             
             
             if spinButton.contains(location) {
+                if ( (credits == 0) || (credits < bets) ) {
+                    showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 15)!)
+                    bets = 0;
+                    spinButton.texture = SKTexture(imageNamed: "grey_spin");
+                    return;
+                }
+                if (bets == 0) {
+                    showToast(message: "You should bet money first.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 15)!)
+                    return;
+                }
+                
                 print("spinning ~~~!")
                 
                 wheelActive = true
     
-                let wait: SKAction = SKAction.wait(forDuration: 1)
+                let wait: SKAction = SKAction.wait(forDuration: 0.2)
                 let spinReel1: SKAction = SKAction.run {
                     self.spinReel(whichReel: 1)
                 }
@@ -440,9 +455,9 @@ class GameScene: SKScene {
                 }
                 let testReelValues: SKAction = SKAction.run {
                     self.testValues()
+                    
                 }
                 self.run(SKAction.sequence([
-                    wait,
                     spinReel1,
                     wait,
                     spinReel2,
@@ -460,28 +475,23 @@ class GameScene: SKScene {
     
     func spinReel(whichReel: Int) -> Void
     {
-        if (credits < bets) {
-            showToast(message: "You don't have enough money.", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
-            
-        } else {
-            let randomNum: UInt32 = arc4random_uniform( UInt32(slotOptios.count))
-            
-            let reelPick: String = slotOptios[ Int(randomNum) ]
-            print("Reel \(whichReel) spun a value of \(reelPick)")
-            
-            if(whichReel == 1)
-            {
-                currentReelValue1 = reelPick
-                spin_1.texture = SKTexture(imageNamed: reelPick)
-            } else if(whichReel == 2)
-            {
-                currentReelValue2 = reelPick
-                spin_2.texture = SKTexture(imageNamed: reelPick)
-            } else if(whichReel == 3)
-            {
-                currentReelValue3 = reelPick
-                spin_3.texture = SKTexture(imageNamed: reelPick)
-            }
+        let randomNum: UInt32 = arc4random_uniform( UInt32(slotOptios.count))
+        
+        let reelPick: String = slotOptios[ Int(randomNum) ]
+        print("Reel \(whichReel) spun a value of \(reelPick)")
+        
+        if(whichReel == 1)
+        {
+            currentReelValue1 = reelPick
+            spin_1.texture = SKTexture(imageNamed: reelPick)
+        } else if(whichReel == 2)
+        {
+            currentReelValue2 = reelPick
+            spin_2.texture = SKTexture(imageNamed: reelPick)
+        } else if(whichReel == 3)
+        {
+            currentReelValue3 = reelPick
+            spin_3.texture = SKTexture(imageNamed: reelPick)
         }
         
     }
@@ -496,13 +506,14 @@ class GameScene: SKScene {
             winRatio = Float(wins / turn)
             if currentReelValue1 == "seven"{
                 //jackpot
+                showToast(message: "YYou win jackpot 5000!!", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 12)!)
                 resultLabel.text = "You win jackpot 5000!!!!"
                 credits += 5000
                 winnerPaid = 5000
                 
             } else {
                 // win
-                resultLabel.text = "You win !!!!"
+                resultLabel.text = "You win!!!!"
                 credits += bets
                 winnerPaid = bets
             }
@@ -511,9 +522,12 @@ class GameScene: SKScene {
             //lose
             losses += 1
             winRatio = Float(wins / turn)
-            resultLabel.text = "You lose ~~"
+            resultLabel.text = "You lose~"
             credits -= bets
             winnerPaid = 0
+        }
+        if (credits < bets) {
+            bets = 0;
         }
     }
     
@@ -523,22 +537,23 @@ class GameScene: SKScene {
     }
     
     func showToast(message : String, font: UIFont) {
+        messageBox(messageTitle: message, messageAlert: "Important", messageBoxStyle: UIAlertController.Style.alert, alertActionStyle: UIAlertAction.Style.default, completionHandler: {});
 
-        let toastLabel = UILabel(frame: CGRect(x: self.view!.frame.size.width/2 - 75, y: self.view!.frame.size.height-100, width: 150, height: 35))
-        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-        toastLabel.textColor = UIColor.white
-        toastLabel.font = font
-        toastLabel.textAlignment = NSTextAlignment.center;
-        toastLabel.text = message
-        toastLabel.alpha = 1.0
-        toastLabel.layer.cornerRadius = 10;
-        toastLabel.clipsToBounds  =  true
-        self.view!.addSubview(toastLabel)
-        UIView.animate(withDuration: 2.0, delay: 0.1, options: .curveEaseOut, animations: {
-             toastLabel.alpha = 0.0
-        }, completion: {(isCompleted) in
-            toastLabel.removeFromSuperview()
-        })
+//        let toastLabel = UILabel(frame: CGRect(x: self.view!.frame.size.width/2 - 75, y: self.view!.frame.size.height-100, width: 150, height: 35))
+//        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+//        toastLabel.textColor = UIColor.white
+//        toastLabel.font = font
+//        toastLabel.textAlignment = NSTextAlignment.center;
+//        toastLabel.text = message
+//        toastLabel.alpha = 1.0
+//        toastLabel.layer.cornerRadius = 10;
+//        toastLabel.clipsToBounds  =  true
+//        self.view!.addSubview(toastLabel)
+//        UIView.animate(withDuration: 2.0, delay: 0.1, options: .curveEaseOut, animations: {
+//             toastLabel.alpha = 0.0
+//        }, completion: {(isCompleted) in
+//            toastLabel.removeFromSuperview()
+//        })
     }
     
     
@@ -553,5 +568,17 @@ class GameScene: SKScene {
         }
     }
     
+    func messageBox(messageTitle: String, messageAlert: String, messageBoxStyle: UIAlertController.Style, alertActionStyle: UIAlertAction.Style, completionHandler: @escaping () -> Void)
+        {
+            let alert = UIAlertController(title: messageTitle, message: messageAlert, preferredStyle: messageBoxStyle)
+
+            let okAction = UIAlertAction(title: "Ok", style: alertActionStyle) { _ in
+                completionHandler() // This will only get called after okay is tapped in the alert
+            }
+
+            alert.addAction(okAction)
+            self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+//            present(alert, animated: true, completion: nil)
+        }
     
 }
