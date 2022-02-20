@@ -2,7 +2,7 @@
  File       : GameScene.swift
  Author     : Feiliang Zhou
  StudentId  : 301216989
- Date       : January 22, 2022
+ Date       : February 19, 2022
  Description: slotmachine
 */
 
@@ -12,26 +12,35 @@ import AVFoundation
 
 class GameScene: SKScene {
     
-    let slotOptios = ["bell", "cherry", "coin", "seven", "grape", "strawberry" ]
+    let slotOptios = ["blank", "bell", "cherry", "coin", "seven", "grape", "strawberry" ]
+    
+    var blank: Int32 = 0
+    var bell: Int32 = 0
+    var cherry: Int32 = 0
+    var coin: Int32 = 0
+    var grape: Int32 = 0
+    var strawberry: Int32 = 0
+    var seven: Int32 = 0
+    
     var currentReelValue1: String = ""
     var currentReelValue2: String = ""
     var currentReelValue3: String = ""
     let initialCredits = 200;
     
     
-    var wins: Int! = 0 {
+    var wins: Double = 0 {
         didSet {
-            winsLabel.text = "Wins: \(wins ?? 0)"
+            winsLabel.text = "Wins: \(wins)"
         }
     }
-    var losses: Int! = 0  {
+    var losses: Double! = 0  {
         didSet {
             lossesLabel.text = "Losses: \(losses ?? 0)"
         }
     }
-    var winRatio: Float! = 0.0 {
+    var winRatio: Double! = 0 {
         didSet {
-            winRatioLabel.text = "WinRatio: \(winRatio ?? 0)"
+            winRatioLabel.text = "WinRatio: \(winRatio ?? 0)%"
         }
     }
     var turn: Int = 0 {
@@ -175,7 +184,7 @@ class GameScene: SKScene {
         self.addChild(lossesLabel)
         
         // winRatioLabel
-        winRatioLabel = SKLabelNode(text: "WinRatio: 0.0")
+        winRatioLabel = SKLabelNode(text: "WinRatio: 0%")
         winRatioLabel.position = CGPoint(x: self.frame.size.width * 0.5 - 220, y: self.frame.size.height * 0.5 - 465)
         winRatioLabel.zPosition = 1
         winRatioLabel.fontName = labelFontName
@@ -433,7 +442,8 @@ class GameScene: SKScene {
             
             if quitButton.contains(location){
                 scene?.run(SKAction.playSoundFileNamed("game-over", waitForCompletion: false))
-                showToast(message: "Quit successfully!", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 30)!)
+                
+                setScene(sceneName: "GameOverScene")
             }
             
             if resetButton.contains(location){
@@ -479,7 +489,7 @@ class GameScene: SKScene {
                 }
                 let testReelValues: SKAction = SKAction.run {
                     self.testValues()
-                    
+                    self.clearState()
                 }
                 self.run(SKAction.sequence([
                     spinReel1,
@@ -497,12 +507,69 @@ class GameScene: SKScene {
     
     }
     
+    func clearState()
+    {
+        blank = 0
+        bell = 0
+        cherry = 0
+        coin = 0
+        grape = 0
+        strawberry = 0
+        seven = 0
+    }
+    
+    func setScene(sceneName:String)
+    {
+        if let view = self.view {
+            if let scene = SKScene(fileNamed: sceneName) {
+                scene.scaleMode = .aspectFill
+                view.presentScene(scene)
+            }
+        }
+    }
+    
     func spinReel(whichReel: Int) -> Void
     {
         scene?.run(SKAction.playSoundFileNamed("spin", waitForCompletion: false))
-        let randomNum: UInt32 = arc4random_uniform( UInt32(slotOptios.count))
         
-        let reelPick: String = slotOptios[ Int(randomNum) ]
+        let randomNum: UInt32 = arc4random_uniform( UInt32(100))
+        //  ["bell", "cherry", "coin", "seven", "grape", "strawberry" ]
+        var reelPick: String = "bell"
+        
+        switch randomNum
+        {
+            case 0..<50: // 50% probability
+                reelPick = "blank"
+                blank += 1
+                break
+            case 50..<80: // 30% probability
+                reelPick = "cherry"
+                cherry += 1
+                break
+            case 80..<90: // 10% probability
+                reelPick = "grape"
+                grape += 1
+                break
+            case 90..<94: // 4% probability
+                reelPick = "strawberry"
+                strawberry += 1
+                break
+            case 94..<97: // 3% probability
+                reelPick = "bell"
+                coin += 1
+                break
+            case 97..<99: // 2% probability
+                reelPick = "coin"
+                coin += 1
+                break
+            case 99..<100: // 1% probability
+                reelPick = "seven"
+                seven += 1
+                break
+            default:
+                break
+        }
+//        let reelPick: String = slotOptios[ Int(randomNum) ]
         print("Reel \(whichReel) spun a value of \(reelPick)")
         
         if(whichReel == 1)
@@ -524,36 +591,67 @@ class GameScene: SKScene {
     func testValues()
     {
         turn += 1
-        if (currentReelValue1 == currentReelValue2 && currentReelValue2 == currentReelValue3)
+        //  ["bell", "cherry", "coin", "seven", "grape", "strawberry" ]
+        if (blank < 1) // win
         {
-            //win
-            scene?.run(SKAction.playSoundFileNamed("win", waitForCompletion: false))
             wins += 1
-            winRatio = Float(wins / turn)
-            if currentReelValue1 == "seven"{
+            resultLabel.text = "You win!!!!"
+            if (bell == 3) {
+                winnerPaid = bets * 10;
+            }
+            else if(cherry == 3) {
+                winnerPaid = bets * 20;
+            }
+            else if (grape == 3) {
+                winnerPaid = bets * 30;
+            }
+            else if (strawberry == 3) {
+                winnerPaid = bets * 40;
+            }
+            else if (coin == 3) {
+                winnerPaid = bets * 50;
+            }
+            else if (seven == 3) {
+                winnerPaid = bets * 100;
                 //jackpot
                 scene?.run(SKAction.playSoundFileNamed("high-score", waitForCompletion: false))
-                showToast(message: "YYou win jackpot 5000!!", font: UIFont(name: "AvenirNextCondensed-Heavy", size: 12)!)
-                resultLabel.text = "You win jackpot 5000!!!!"
-                credits += 5000
-                winnerPaid = 5000
+                showToast(message: "You win jackpot \(winnerPaid)!!", font: UIFont(name: "Chalkduster", size: 20)!)
+                resultLabel.text = "You win jackpot \(winnerPaid)!!!!"
                 
-            } else {
-                // win
-                resultLabel.text = "You win!!!!"
-                credits += bets
-                winnerPaid = bets
             }
-        } else {
-            print("you lose, sucker~")
+            else if (bell == 2) {
+                winnerPaid = bets * 2;
+            }
+            else if (cherry == 2) {
+                winnerPaid = bets * 2;
+            }
+            else if (grape == 2) {
+                winnerPaid = bets * 2;
+            }
+            else if (strawberry == 2) {
+                winnerPaid = bets * 2;
+            }
+            else if (coin == 2) {
+                winnerPaid = bets * 3;
+            }
+            else if (seven == 2) {
+                winnerPaid = bets * 20;
+            }
+            else if (seven == 1) {
+                winnerPaid = bets * 5;
+            }
+            credits += winnerPaid
+            
+        } else {  // lose
+            print("you lose~")
             //lose
-            scene?.run(SKAction.playSoundFileNamed("chimeup", waitForCompletion: false))
             losses += 1
-            winRatio = Float(wins / turn)
             resultLabel.text = "You lose~"
             credits -= bets
             winnerPaid = 0
         }
+        
+        winRatio = ceil((wins/Double(turn))*100)
         if (credits < bets) {
             bets = 0;
         }

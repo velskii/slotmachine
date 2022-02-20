@@ -15,6 +15,16 @@
 		C412CA1C27B098600054D3DB /* game-over.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C412CA1427B098600054D3DB /* game-over.mp3 */; };
 		C412CA1D27B098600054D3DB /* high-score.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C412CA1527B098600054D3DB /* high-score.mp3 */; };
 		C412CA1E27B098600054D3DB /* riseup.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C412CA1627B098600054D3DB /* riseup.mp3 */; };
+		C4BCD12427C1E1B500E3950A /* HelpScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BCD12327C1E1B500E3950A /* HelpScene.swift */; };
+		C4BCD12627C1E1C800E3950A /* HelpScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = C4BCD12527C1E1C800E3950A /* HelpScene.sks */; };
+		C4BCD12827C1E1F300E3950A /* SupportScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BCD12727C1E1F300E3950A /* SupportScene.swift */; };
+		C4BCD12A27C1E21200E3950A /* SupportScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = C4BCD12927C1E21200E3950A /* SupportScene.sks */; };
+		C4BCD12C27C1E23700E3950A /* DocumentationScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BCD12B27C1E23700E3950A /* DocumentationScene.swift */; };
+		C4BCD12E27C1E24900E3950A /* DocumentationScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = C4BCD12D27C1E24900E3950A /* DocumentationScene.sks */; };
+		C4BCD13027C1E64500E3950A /* StartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BCD12F27C1E64500E3950A /* StartScene.swift */; };
+		C4BCD13227C1E66200E3950A /* StartScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = C4BCD13127C1E66200E3950A /* StartScene.sks */; };
+		C4BCD13927C2D32200E3950A /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BCD13827C2D32200E3950A /* GameOverScene.swift */; };
+		C4BCD13B27C2D33400E3950A /* GameOverScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = C4BCD13A27C2D33400E3950A /* GameOverScene.sks */; };
 		C4D14886279DDF370041DB78 /* images in Resources */ = {isa = PBXBuildFile; fileRef = C4D14885279DDF370041DB78 /* images */; };
 		C4E4FEB5279CCC6A00971FAB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E4FEB4279CCC6A00971FAB /* AppDelegate.swift */; };
 		C4E4FEB7279CCC6A00971FAB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = C4E4FEB6279CCC6A00971FAB /* GameScene.sks */; };
@@ -35,6 +45,20 @@
 		C412CA1427B098600054D3DB /* game-over.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "game-over.mp3"; sourceTree = "<group>"; };
 		C412CA1527B098600054D3DB /* high-score.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "high-score.mp3"; sourceTree = "<group>"; };
 		C412CA1627B098600054D3DB /* riseup.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = riseup.mp3; sourceTree = "<group>"; };
+		C4BCD12327C1E1B500E3950A /* HelpScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpScene.swift; sourceTree = "<group>"; };
+		C4BCD12527C1E1C800E3950A /* HelpScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = HelpScene.sks; sourceTree = "<group>"; };
+		C4BCD12727C1E1F300E3950A /* SupportScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportScene.swift; sourceTree = "<group>"; };
+		C4BCD12927C1E21200E3950A /* SupportScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SupportScene.sks; sourceTree = "<group>"; };
+		C4BCD12B27C1E23700E3950A /* DocumentationScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentationScene.swift; sourceTree = "<group>"; };
+		C4BCD12D27C1E24900E3950A /* DocumentationScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DocumentationScene.sks; sourceTree = "<group>"; };
+		C4BCD12F27C1E64500E3950A /* StartScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScene.swift; sourceTree = "<group>"; };
+		C4BCD13127C1E66200E3950A /* StartScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartScene.sks; sourceTree = "<group>"; };
+		C4BCD13427C1EFAD00E3950A /* dock51.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = dock51.woff; sourceTree = "<group>"; };
+		C4BCD13527C1EFAD00E3950A /* dock51.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = dock51.woff2; sourceTree = "<group>"; };
+		C4BCD13627C1EFAD00E3950A /* Dock51.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dock51.ttf; sourceTree = "<group>"; };
+		C4BCD13727C1F46600E3950A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C4BCD13827C2D32200E3950A /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		C4BCD13A27C2D33400E3950A /* GameOverScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOverScene.sks; sourceTree = "<group>"; };
 		C4D14885279DDF370041DB78 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		C4E4FEB1279CCC6A00971FAB /* slotmachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = slotmachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E4FEB4279CCC6A00971FAB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +97,33 @@
 			path = audio;
 			sourceTree = "<group>";
 		};
+		C4BCD12227C1E1A300E3950A /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				C4BCD12327C1E1B500E3950A /* HelpScene.swift */,
+				C4BCD12527C1E1C800E3950A /* HelpScene.sks */,
+				C4BCD12727C1E1F300E3950A /* SupportScene.swift */,
+				C4BCD12927C1E21200E3950A /* SupportScene.sks */,
+				C4BCD12B27C1E23700E3950A /* DocumentationScene.swift */,
+				C4BCD12D27C1E24900E3950A /* DocumentationScene.sks */,
+				C4BCD12F27C1E64500E3950A /* StartScene.swift */,
+				C4BCD13127C1E66200E3950A /* StartScene.sks */,
+				C4BCD13827C2D32200E3950A /* GameOverScene.swift */,
+				C4BCD13A27C2D33400E3950A /* GameOverScene.sks */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		C4BCD13327C1EFAD00E3950A /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				C4BCD13427C1EFAD00E3950A /* dock51.woff */,
+				C4BCD13527C1EFAD00E3950A /* dock51.woff2 */,
+				C4BCD13627C1EFAD00E3950A /* Dock51.ttf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
 		C4E4FEA8279CCC6A00971FAB = {
 			isa = PBXGroup;
 			children = (
@@ -93,6 +144,8 @@
 		C4E4FEB3279CCC6A00971FAB /* slotmachine */ = {
 			isa = PBXGroup;
 			children = (
+				C4BCD13727C1F46600E3950A /* Info.plist */,
+				C4BCD12227C1E1A300E3950A /* Scenes */,
 				C4E4FEB4279CCC6A00971FAB /* AppDelegate.swift */,
 				C4E4FEB6279CCC6A00971FAB /* GameScene.sks */,
 				C4E4FEB8279CCC6A00971FAB /* Actions.sks */,
@@ -101,6 +154,7 @@
 				C4E4FEBE279CCC6A00971FAB /* Main.storyboard */,
 				C4E4FEC1279CCC6E00971FAB /* Assets.xcassets */,
 				C4E4FEC3279CCC6E00971FAB /* LaunchScreen.storyboard */,
+				C4BCD13327C1EFAD00E3950A /* fonts */,
 				C4D14885279DDF370041DB78 /* images */,
 			);
 			path = slotmachine;
@@ -172,12 +226,17 @@
 				C412CA1927B098600054D3DB /* casino-chips.mp3 in Resources */,
 				C4E4FEB7279CCC6A00971FAB /* GameScene.sks in Resources */,
 				C4E4FEC2279CCC6E00971FAB /* Assets.xcassets in Resources */,
+				C4BCD12627C1E1C800E3950A /* HelpScene.sks in Resources */,
+				C4BCD13227C1E66200E3950A /* StartScene.sks in Resources */,
+				C4BCD13B27C2D33400E3950A /* GameOverScene.sks in Resources */,
 				C412CA1827B098600054D3DB /* chimeup.mp3 in Resources */,
+				C4BCD12A27C1E21200E3950A /* SupportScene.sks in Resources */,
 				C412CA1A27B098600054D3DB /* spin.mp3 in Resources */,
 				C4E4FEC5279CCC6E00971FAB /* LaunchScreen.storyboard in Resources */,
 				C412CA1727B098600054D3DB /* background-music.mp3 in Resources */,
 				C412CA1C27B098600054D3DB /* game-over.mp3 in Resources */,
 				C4E4FEB9279CCC6A00971FAB /* Actions.sks in Resources */,
+				C4BCD12E27C1E24900E3950A /* DocumentationScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,7 +248,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4E4FEBB279CCC6A00971FAB /* GameScene.swift in Sources */,
+				C4BCD13027C1E64500E3950A /* StartScene.swift in Sources */,
+				C4BCD13927C2D32200E3950A /* GameOverScene.swift in Sources */,
+				C4BCD12427C1E1B500E3950A /* HelpScene.swift in Sources */,
 				C4E4FEBD279CCC6A00971FAB /* GameViewController.swift in Sources */,
+				C4BCD12C27C1E23700E3950A /* DocumentationScene.swift in Sources */,
+				C4BCD12827C1E1F300E3950A /* SupportScene.swift in Sources */,
 				C4E4FEB5279CCC6A00971FAB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,6 +404,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = slotmachine/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -367,6 +432,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = slotmachine/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
