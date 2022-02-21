@@ -1,6 +1,7 @@
 
 import SpriteKit
 import GameplayKit
+import FirebaseAuth
 
 class StartScene : SKScene
 {
@@ -17,6 +18,9 @@ class StartScene : SKScene
     override func didMove(to view: SKView) {
         
         self.backgroundColor = SKColor.white
+        
+        let firebaseStore = FirebaseManager()
+        firebaseStore.getGlobalData(key: "global_jackpot")
         
         // slot graphic
         let slotGraphic = SKSpriteNode(texture: SKTexture(imageNamed: "slot-machine"), size: CGSize(width: 400, height: 150))

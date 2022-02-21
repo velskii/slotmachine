@@ -22,6 +22,27 @@ class GameScene: SKScene {
     var strawberry: Int32 = 0
     var seven: Int32 = 0
     
+    // HELP button
+    var helpButton: SKLabelNode!
+    // SUPPORT button
+    var supportButton: SKLabelNode!
+    // DOCUMENTATION button
+    var documentationButton: SKLabelNode!
+    
+    var highestPayout: Int = 0 {
+        didSet {
+            highestPayoutLabel.text = "Highest Payout: \(highestPayout)"
+        }
+    }
+    var globalJackpot: Int = 1000 {
+        didSet {
+            globalJackpotLabel.text = "Global Jackpot: \(globalJackpot)"
+        }
+    }
+    
+    var highestPayoutLabel: SKLabelNode!
+    var globalJackpotLabel: SKLabelNode!
+    
     var currentReelValue1: String = ""
     var currentReelValue2: String = ""
     var currentReelValue3: String = ""
@@ -63,6 +84,7 @@ class GameScene: SKScene {
     var jackpotNumber: SKLabelNode!
     
     var jackpotLabel: SKLabelNode!
+    
     
     
     
@@ -118,7 +140,6 @@ class GameScene: SKScene {
     var numberFontName: String = "BanglaSangamMN-Bold"
     var labelFontSize: Int = 25
     var numberFontSize: Int = 30
-    
     
     override func didMove(to view: SKView) {
         
@@ -201,6 +222,56 @@ class GameScene: SKScene {
         slotGraphic.position = CGPoint(x: self.frame.size.width * 0.5 - 380, y: self.frame.size.height * 0.5 - 145)
         slotGraphic.zPosition = 1
         self.addChild(slotGraphic)
+        
+        // HELP button
+        helpButton = SKLabelNode(text: "Help")
+        helpButton.position = CGPoint(x: -250, y: -540)
+        helpButton.zPosition = 1
+        helpButton.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        helpButton.fontName = "AmericanTypewriter-Bold"
+        helpButton.fontSize = CGFloat(25)
+        helpButton.fontColor = SKColor.black
+        self.addChild(helpButton)
+        
+        // SUPPORT button
+        supportButton = SKLabelNode(text: "Support")
+        supportButton.position = CGPoint(x: -250, y: -560)
+        supportButton.zPosition = 1
+        supportButton.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        supportButton.fontName = "AmericanTypewriter-Bold"
+        supportButton.fontSize = CGFloat(25)
+        supportButton.fontColor = SKColor.black
+        self.addChild(supportButton)
+        
+        // DOCUMENTATION button
+        documentationButton = SKLabelNode(text: "Documentation")
+        documentationButton.position = CGPoint(x: -250, y: -580)
+        documentationButton.zPosition = 1
+        documentationButton.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        documentationButton.fontName = "AmericanTypewriter-Bold"
+        documentationButton.fontSize = CGFloat(25)
+        documentationButton.fontColor = SKColor.black
+        self.addChild(documentationButton)
+        
+        // Global Jackpot Label
+        globalJackpotLabel = SKLabelNode(text: "Global Jackpot: 1000")
+        globalJackpotLabel.position = CGPoint(x: 20, y: -540)
+        globalJackpotLabel.zPosition = 1
+        globalJackpotLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        globalJackpotLabel.fontName = labelFontName
+        globalJackpotLabel.fontSize = CGFloat(25)
+        globalJackpotLabel.fontColor = SKColor.green
+        self.addChild(globalJackpotLabel)
+        
+        // Highest Payout Label
+        highestPayoutLabel = SKLabelNode(text: "Highest Payout: 0")
+        highestPayoutLabel.position = CGPoint(x: 20, y: -560)
+        highestPayoutLabel.zPosition = 1
+        highestPayoutLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        highestPayoutLabel.fontName = labelFontName
+        highestPayoutLabel.fontSize = CGFloat(25)
+        highestPayoutLabel.fontColor = SKColor.green
+        self.addChild(highestPayoutLabel)
         
         // Jackpot Label
         jackpotLabel = SKLabelNode(text: "JACKPOT")
@@ -459,6 +530,36 @@ class GameScene: SKScene {
                 spin_3.texture = SKTexture(imageNamed: "spin")
             }
             
+            if helpButton.contains(location){
+                
+                if let view = self.view {
+                    
+                    let helpScene = SKScene(fileNamed: "HelpScene")
+                    helpScene?.scaleMode = .aspectFill
+                    view.presentScene( helpScene!, transition: SKTransition.fade(withDuration: 0.5) )
+                }
+            }
+            
+            if supportButton.contains(location){
+                
+                if let view = self.view {
+                    
+                    let helpScene = SKScene(fileNamed: "SupportScene")
+                    helpScene?.scaleMode = .aspectFill
+                    view.presentScene( helpScene!, transition: SKTransition.fade(withDuration: 0.5) )
+                }
+            }
+            
+            if documentationButton.contains(location){
+                
+                if let view = self.view {
+                    
+                    let helpScene = SKScene(fileNamed: "DocumentationScene")
+                    helpScene?.scaleMode = .aspectFill
+                    view.presentScene( helpScene!, transition: SKTransition.fade(withDuration: 0.5) )
+                }
+            }
+            
             
             if spinButton.contains(location) {
                 if ( (credits == 0) || (credits < bets) ) {
@@ -590,6 +691,8 @@ class GameScene: SKScene {
     
     func testValues()
     {
+        
+        let firebaseStore = FirebaseManager()
         turn += 1
         //  ["bell", "cherry", "coin", "seven", "grape", "strawberry" ]
         if (blank < 1) // win
@@ -640,6 +743,11 @@ class GameScene: SKScene {
             else if (seven == 1) {
                 winnerPaid = bets * 5;
             }
+            if (winnerPaid > highestPayout)
+            {
+                highestPayout = winnerPaid
+                firebaseStore.updateGlobalData(key: "highest_payout", value: highestPayout)
+            }
             credits += winnerPaid
             
         } else {  // lose
@@ -649,6 +757,9 @@ class GameScene: SKScene {
             resultLabel.text = "You lose~"
             credits -= bets
             winnerPaid = 0
+            
+            globalJackpot += (Int)(bets / 15)
+            firebaseStore.updateGlobalData(key: "global_jackpot", value: globalJackpot)
         }
         
         winRatio = ceil((wins/Double(turn))*100)
@@ -664,35 +775,8 @@ class GameScene: SKScene {
     
     func showToast(message : String, font: UIFont) {
         messageBox(messageTitle: message, messageAlert: "Important", messageBoxStyle: UIAlertController.Style.alert, alertActionStyle: UIAlertAction.Style.default, completionHandler: {});
-
-//        let toastLabel = UILabel(frame: CGRect(x: self.view!.frame.size.width/2 - 75, y: self.view!.frame.size.height-100, width: 150, height: 35))
-//        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-//        toastLabel.textColor = UIColor.white
-//        toastLabel.font = font
-//        toastLabel.textAlignment = NSTextAlignment.center;
-//        toastLabel.text = message
-//        toastLabel.alpha = 1.0
-//        toastLabel.layer.cornerRadius = 10;
-//        toastLabel.clipsToBounds  =  true
-//        self.view!.addSubview(toastLabel)
-//        UIView.animate(withDuration: 2.0, delay: 0.1, options: .curveEaseOut, animations: {
-//             toastLabel.alpha = 0.0
-//        }, completion: {(isCompleted) in
-//            toastLabel.removeFromSuperview()
-//        })
     }
     
-    
-    
-    func checkJackPot() {
-        var jackPotTry = arc4random_uniform(100);
-        var jackPotWin = arc4random_uniform(100);
-        if (jackPotTry == jackPotWin) {
-            showToast(message: "You Won the $\(jackpot) Jackpot!!", font: UIFont(name: "Bangla Sangam MN", size: 30)!)
-            credits += jackpot;
-            jackpot = 1000;
-        }
-    }
     
     func messageBox(messageTitle: String, messageAlert: String, messageBoxStyle: UIAlertController.Style, alertActionStyle: UIAlertAction.Style, completionHandler: @escaping () -> Void)
         {

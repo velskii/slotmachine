@@ -9,13 +9,30 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import FirebaseAuth
 
 class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setScene(sceneName: "StartScene")
+        Auth.auth().signInAnonymously { authResult, error in
+            if let error = error
+            {
+                print(error.localizedDescription)
+            }
+            
+            guard let user = authResult?.user else {
+                print("anonymous login failed")
+                return
+            }
+            let isAnonymous = user.isAnonymous  // true
+            let uid = user.uid
+            print("uid: \(uid). is Anonymous:\(isAnonymous)")
+           
+        }
+        
+        setScene(sceneName: "GameScene")
         
     }
     

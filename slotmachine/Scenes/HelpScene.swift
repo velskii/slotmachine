@@ -16,13 +16,31 @@ class HelpScene : SKScene
         backButton.fontColor = SKColor.black
         self.addChild(backButton)
         
-        let winner = SKLabelNode(fontNamed: "Chalkduster")
-        winner.text = "You Win!"
-        winner.fontSize = 65
-        winner.fontColor = SKColor.green
-        winner.position = CGPoint(x: frame.midX, y: frame.midY)
+        let title = SKLabelNode(fontNamed: "Chalkduster")
+        title.text = "Help"
+        title.fontSize = 65
+        title.fontColor = SKColor.green
+        title.position = CGPoint(x: frame.midX, y: 400)
            
-        addChild(winner)
+        addChild(title)
+        
+        let txt1 = SKLabelNode(fontNamed: "Chalkduster")
+        txt1.text = "Bet your money first"
+        txt1.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        txt1.fontSize = 30
+        txt1.fontColor = SKColor.green
+        txt1.position = CGPoint(x: -280, y: 100)
+           
+        addChild(txt1)
+        
+        let txt2 = SKLabelNode(fontNamed: "Chalkduster")
+        txt2.text = "click the spin button to start the game!"
+        txt2.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        txt2.fontSize = 30
+        txt2.fontColor = SKColor.green
+        txt2.position = CGPoint(x: -280, y: 0)
+           
+        addChild(txt2)
 
         
     }
@@ -34,7 +52,7 @@ class HelpScene : SKScene
                 
                 if let view = self.view {
                     
-                    let startScene = SKScene(fileNamed: "StartScene")
+                    let startScene = SKScene(fileNamed: "GameScene")
                     startScene?.scaleMode = .aspectFill
                     view.presentScene( startScene!, transition: SKTransition.fade(withDuration: 0.5) )
                 }
