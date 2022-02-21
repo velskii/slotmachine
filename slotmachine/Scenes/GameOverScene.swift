@@ -46,7 +46,7 @@ class GameOverScene : SKScene
                 
                 if let view = self.view {
                     
-                    let startScene = SKScene(fileNamed: "StartScene")
+                    let startScene = SKScene(fileNamed: "GameScene")
                     startScene?.scaleMode = .aspectFill
                     view.presentScene( startScene!, transition: SKTransition.fade(withDuration: 0.5) )
                 }
